@@ -11,6 +11,15 @@ dependencies = [
 readme = "README.md"
 requires-python = ">= 3.8"
 
+[project.optional-dependencies]
+all = [
+    "pydantic>=2.6.4",
+    "pyautogui>=0.9.54",
+    "screeninfo>=0.8.1",
+    "pygetwindow>=0.0.9",
+    "psutil>=5.8.0" 
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -21,6 +30,7 @@ dev-dependencies = [
     "pydantic>=2.6.4",
     "pyautogui>=0.9.54",
     "screeninfo>=0.8.1",
+    "psutil>=5.9.8",
 ]
 
 [tool.hatch.metadata]

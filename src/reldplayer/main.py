@@ -1,47 +1,87 @@
 from functools import cached_property
+import json
 import os
 from time import sleep
 
 class ReLDPlayerFactory:
-    def __init__(self) -> None:
-        self.__instance = None
 
-    def __strategy_1(self):
+    def strategy_1(self):
         # try to get the instance by checking psutil
-        if os.path.exists("C:\Program Files\LDPlayer"):
-            return "C:\Program Files\LDPlayer"
+        if os.path.exists("C:\\Program Files\\LDPlayer"):
+            return "C:\\Program Files\\LDPlayer"
         
-        if os.path.exists("C:\Program Files (x86)\LDPlayer"):
-            return "C:\Program Files (x86)\LDPlayer"
+        if os.path.exists("C:\\Program Files (x86)\\LDPlayer"):
+            return "C:\\Program Files (x86)\\LDPlayer"
 
-    def __strategy_2(self):
-        
+    def strategy_2(self):
+        import psutil
+        for proc in psutil.process_iter():
+            if proc.name() in ["dnplayer.exe", "dnmultiplayer.exe"]:
+                return os.path.dirname(proc.cmdline()[0])
 
-    def __get__(self, obj, objtype):
-        if self.__instance is not None:
-            return self.__instance
-        
+    def __last_resort(self, objtype : type):
+        for path in objtype._record:
+            if path not in objtype._instances:
+                return objtype(path)
+
+    def __strategy_loop(self):
         counter = 1
         while True:
-            if not hasattr(self, f"__strategy_{counter}"):
+            if not hasattr(self, f"strategy_{counter}"):
                 break
-            path = getattr(self, f"__strategy_{counter}")()
+            path = getattr(self, f"strategy_{counter}")()
             if path:
-                self.__instance = ReLDPlayer(path)
-                break
+                return ReLDPlayer(path)
+                
             counter += 1
 
-        if not self.__instance:
-            raise RuntimeError("LDPlayer not found")
+        return self.__last_resort(ReLDPlayer)
 
-        return self.__instance
-    
+    def __get__(self, obj, objtype):
+        try:
+            res = self.__strategy_loop()
+            if not res:
+                raise
+            return res
+                
+        except Exception:
+            raise RuntimeError("cannot find a valid LDPlayer instance")
 
+class ReLDPlayerMeta(type):
+    _record = None
+    _instances = {}
+    __pkg_dir =  os.path.dirname(os.path.realpath(__file__))
 
-class ReLDPlayer:
+    def __new__(self, name, bases, attrs):
+        if self._record is None:
+            if not os.path.exists(os.path.join(self.__pkg_dir, "reldplayer_records")):
+                with open(os.path.join(self.__pkg_dir, "reldplayer_records"), "w") as f:
+                    json.dump([], f)
+                self._record = []
+            else:
+                with open(os.path.join(self.__pkg_dir, "reldplayer_records"), "r") as f:
+                    self._record = json.load(f)
+
+        return super().__new__(self, name, bases, attrs)
+
+    def __call__(self, path : str):
+        if not os.path.exists(path):
+            raise RuntimeError(f"Not a valid path: {path}")
+        path = os.path.abspath(path)
+        if path not in self._record:
+            self._record.append(path)
+            with open(os.path.join(self.__pkg_dir, "reldplayer_records"), "w") as f:
+                json.dump(self._record, f)
+
+        if path not in self._instances:
+            self._instances[path] = super().__call__(path)
+        return self._instances[path]
+
+class ReLDPlayer(metaclass=ReLDPlayerMeta):
+    factory = ReLDPlayerFactory()
+
     def __init__(self, path : str):
         self.__path = path
-
         self.__batches = []
 
     def query(self, query : str, returnIds : bool = False):
