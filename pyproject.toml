@@ -1,6 +1,6 @@
 [project]
 name = "reldplayer"
-version = "0.0.1a1"
+version = "0.0.1a2"
 description = "a reimagined pyldplayer that better suits scripting needs"
 authors = [
     { name = "ZackaryW", email = "36378555+ZackaryW@users.noreply.github.com" }

@@ -41,7 +41,7 @@ class Rawconsole(ConsoleInterface):
             None
         """
         subprocess.Popen( # noqa
-        [self.path, *args],
+        [self.path, *(str(arg) for arg in args)],
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         creationflags=
             subprocess.DETACHED_PROCESS |
@@ -64,7 +64,7 @@ class Rawconsole(ConsoleInterface):
             if not len(args):
                 queryed = [self.path]
             else:
-                queryed = [self.path, *args]
+                queryed = [self.path, *(str(arg) for arg in args)]
 
             proc : subprocess.CompletedProcess = subprocess.run(
                 queryed,
