@@ -8,3 +8,7 @@
 #   with-sources: false
 
 -e file:.
+pillow==10.3.0
+    # via reldplayer
+zro2==0.2.0
+    # via reldplayer

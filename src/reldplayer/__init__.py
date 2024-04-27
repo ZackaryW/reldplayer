@@ -1,1 +1,2 @@
-from .main import ReLDPlayer # noqa
+from .player import Reldplayer 
+from .com.config import Config

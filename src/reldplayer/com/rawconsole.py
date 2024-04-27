@@ -1,20 +1,25 @@
-
+from functools import cached_property
 import os
 import subprocess
 import typing
-from .models import ConsoleInterface, InstanceDict
 
-class Rawconsole(ConsoleInterface):
-    def __init__(self, path : str):
-        if not os.path.exists(path):
-            raise FileNotFoundError
-        
-        if not path.endswith("ldconsole.exe"):
-            raise ValueError("path must end with ldconsole.exe")
-        
-        self.path = path
+from .._internal.i import IConsole, InstanceMeta
+from ..com.config import Config
 
-    def __argument_id(self, mnq_name : str, mnq_idx : int, arglist :list):
+
+class RawConsole(IConsole):
+    __get_config__: Config
+
+    @cached_property
+    def __ldconsole__(self):
+        return os.path.join(self.__get_config__.path, "ldconsole.exe")
+
+    def __argument_id(
+        self,
+        mnq_name: typing.Optional[str],
+        mnq_idx: typing.Optional[int],
+        arglist: list,
+    ):
         if mnq_name is None and mnq_idx is None:
             raise ValueError("mnq_name and mnq_idx cannot both be None")
 
@@ -25,10 +30,10 @@ class Rawconsole(ConsoleInterface):
         else:
             arglist.extend(["--index", str(mnq_idx)])
 
-    def __argument_check_range(self, value :int, low :int, high :int):
+    def __argument_check_range(self, value: int, low: int, high: int):
         if value < low or value > high:
             raise ValueError(f"value must be between {low} and {high}")
-        
+
     # ANCHOR subporcess
     def _exec(self, *args):
         """
@@ -40,16 +45,17 @@ class Rawconsole(ConsoleInterface):
         Returns:
             None
         """
-        subprocess.Popen( # noqa
-        [self.path, *(str(arg) for arg in args)],
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        creationflags=
-            subprocess.DETACHED_PROCESS |
-            subprocess.CREATE_NEW_PROCESS_GROUP | 
-            subprocess.CREATE_BREAKAWAY_FROM_JOB
-    )
+        subprocess.Popen(  # noqa
+            [self.__ldconsole__, *(str(arg) for arg in args)],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=subprocess.DETACHED_PROCESS
+            | subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.CREATE_BREAKAWAY_FROM_JOB,
+        )
 
-    def _queryRaw(self, *args, timeout : int = 5):
+    def _queryRaw(self, *args, timeout: int = 5):
         """
         Executes a raw query using the specified arguments and a timeout.
 
@@ -62,32 +68,30 @@ class Rawconsole(ConsoleInterface):
         """
         try:
             if not len(args):
-                queryed = [self.path]
+                queryed = [self.__ldconsole__]
             else:
-                queryed = [self.path, *(str(arg) for arg in args)]
+                queryed = [self.__ldconsole__, *(str(arg) for arg in args)]
 
-            proc : subprocess.CompletedProcess = subprocess.run(
-                queryed,
-                capture_output=True,
-                timeout=timeout
+            proc: subprocess.CompletedProcess = subprocess.run(
+                queryed, capture_output=True, timeout=timeout
             )
-            comm : bytes = proc.stdout
+            comm: bytes = proc.stdout
 
         except subprocess.TimeoutExpired as e:
             raise e
         except subprocess.CalledProcessError as e:
             raise e
-        
+
         return comm
-    
+
     def _query(
-        self, 
-        *args, 
-        timeout: int = 5, 
-        raw: bool = False, 
-        decodeOrder: typing.List[str] = ["utf-8", "gbk"], 
+        self,
+        *args,
+        timeout: int = 5,
+        raw: bool = False,
+        decodeOrder: typing.List[str] = ["utf-8", "gbk"],
         toList: bool = False,
-        stripNullLines : bool = False
+        stripNullLines: bool = False,
     ):
         """
         Perform a query with optional parameters for timeout, raw output, return context, decoding order, conversion to list, and stripping null lines.
@@ -107,26 +111,30 @@ class Rawconsole(ConsoleInterface):
 
         if raw:
             return rawProcess
-        
+
         for decoder in decodeOrder:
             try:
                 decoded = rawProcess.decode(decoder)
-            except: #noqa
+            except:  # noqa
                 continue
 
             ret = decoded
 
         if toList:
             ret = ret.strip().split("\r\n")
-        
+
             if stripNullLines:
                 ret = list(filter(None, ret))
                 ret = list(map(lambda x: x.strip(), ret))
-        
+
         return ret
 
     # ANCHOR commands
-    def quit(self, mnq_name : str = None, mnq_idx : int = None):
+    def quit(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         self._exec("quit", *arglist)
@@ -134,12 +142,20 @@ class Rawconsole(ConsoleInterface):
     def quitall(self):
         self._exec("quitall")
 
-    def launch(self, mnq_name : str = None, mnq_idx : int = None):
+    def launch(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         self._exec("launch", *arglist)
 
-    def reboot(self, mnq_name : str = None, mnq_idx : int = None):
+    def reboot(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         self._exec("reboot", *arglist)
@@ -150,74 +166,101 @@ class Rawconsole(ConsoleInterface):
     def runninglist(self):
         return self._query("runninglist")
 
-    def isrunning(self, mnq_name : str = None, mnq_idx : int = None):
+    def isrunning(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         return self._query("isrunning", *arglist) == "running"
 
-    def list2(self) -> typing.List[InstanceDict]:
+    def list2(self) -> typing.List[InstanceMeta]:
         raw = self._query("list2", toList=True)
+        assert isinstance(raw, list)
         ret = []
         for item in raw:
-            item : str
+            item: str
             splitted = item.split(",")
 
-            ret.append(InstanceDict(
-                id=int(splitted[0]),
-                name=splitted[1],
-                top_window_handle=int(splitted[2]),
-                bind_window_handle=int(splitted[3]),
-                android_started_int=int(splitted[4]),
-                pid=int(splitted[5]),
-                pid_of_vbox=int(splitted[6]),
-            ))
-        
+            ret.append(
+                InstanceMeta(
+                    id=int(splitted[0]),
+                    name=splitted[1],
+                    top_window_handle=int(splitted[2]),
+                    bind_window_handle=int(splitted[3]),
+                    android_started_int=int(splitted[4]),
+                    pid=int(splitted[5]),
+                    pid_of_vbox=int(splitted[6]),
+                )
+            )
+
         return ret
-    
-    def add(self, mnq_name : str = None):
+
+    def add(self, mnq_name: typing.Optional[str] = None):
         arglist = ["--name", mnq_name] if mnq_name is not None else []
         self._exec("add", *arglist)
 
-    def copy(self, mnq_name : str = None, mnq_idx : int = None, to : str = None):
+    def copy(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        to: typing.Optional[str] = None,
+    ):
         if not mnq_name and not mnq_idx:
             raise ValueError("mnq_name and mnq_idx cannot both be None")
-        arglist = ["--from", mnq_name] if mnq_name is not None else ["--from", str(mnq_idx), "--to", to]
+        arglist = (
+            ["--from", mnq_name]
+            if mnq_name is not None
+            else ["--from", str(mnq_idx), "--to", to]
+        )
 
         if to is not None:
             arglist = ["--name", to] + arglist
 
         self._exec("copy", *arglist)
 
-    def remove(self, mnq_name : str = None, mnq_idx : int = None):
+    def remove(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         self._exec("remove", *arglist)
 
-    def rename(self, mnq_name : str = None, mnq_idx : int = None, title : str = None):
+    def rename(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        title: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         if title is not None:
-            arglist.extend(["--title", title]) 
+            arglist.extend(["--title", title])
         self._exec("rename", *arglist)
 
     def modify(
         self,
-        mnq_name : str = None, 
-        mnq_idx : int = None, 
-        resolution : str = None,
-        cpu : typing.Literal[1,2,3,4] = None,
-        memory : typing.Literal[256, 512,768,1024, 2048, 4096, 8192] = None,
-        manufacturer : str = None,
-        model : str = None,
-        pnumber : int = None,
-        imei : typing.Union[typing.Literal["auto"], str] = None,
-        imsi : typing.Union[typing.Literal["auto"], str] = None,
-        simserial : typing.Union[typing.Literal["auto"], str] = None,
-        androidid : typing.Union[typing.Literal["auto"], str] = None,
-        mac : typing.Union[typing.Literal["auto"], str] = None,
-        autorotate : bool = None,
-        lockwindow : bool = None,
-        root : bool = None
+        mnq_name: typing.Optional[typing.Optional[str]] = None,
+        mnq_idx: typing.Optional[typing.Optional[int]] = None,
+        resolution: typing.Optional[str] = None,
+        cpu: typing.Optional[typing.Literal[1, 2, 3, 4]] = None,
+        memory: typing.Optional[
+            typing.Literal[256, 512, 768, 1024, 2048, 4096, 8192]
+        ] = None,
+        manufacturer: typing.Optional[str] = None,
+        model: typing.Optional[str] = None,
+        pnumber: typing.Optional[int] = None,
+        imei: typing.Optional[typing.Union[typing.Literal["auto"], str]] = None,
+        imsi: typing.Optional[typing.Union[typing.Literal["auto"], str]] = None,
+        simserial: typing.Optional[typing.Union[typing.Literal["auto"], str]] = None,
+        androidid: typing.Optional[typing.Union[typing.Literal["auto"], str]] = None,
+        mac: typing.Optional[typing.Union[typing.Literal["auto"], str]] = None,
+        autorotate: typing.Optional[bool] = None,
+        lockwindow: typing.Optional[bool] = None,
+        root: typing.Optional[bool] = None,
     ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
@@ -251,81 +294,151 @@ class Rawconsole(ConsoleInterface):
             arglist.extend(["--root", 1 if root else 0])
         self._exec("modify", *arglist)
 
-    def installapp(self, mnq_name : str = None, mnq_idx : int = None, apk_file_name : str = None):
+    def installapp(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_file_name: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--filename", apk_file_name])
         self._exec("installapp", *arglist)
 
-    def uninstallapp(self, mnq_name : str = None, mnq_idx : int = None, apk_package_name : str = None):
+    def uninstallapp(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_package_name: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--packagename", apk_package_name])
         self._exec("uninstallapp", *arglist)
 
-    def runapp(self, mnq_name : str = None, mnq_idx : int = None, apk_package_name : str = None):
+    def runapp(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_package_name: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--packagename", apk_package_name])
         self._exec("runapp", *arglist)
 
-    def killapp(self, mnq_name : str = None, mnq_idx : int = None, apk_package_name : str = None):
+    def killapp(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_package_name: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--packagename", apk_package_name])
         self._exec("killapp", *arglist)
 
-    def locate(self, mnq_name : str = None, mnq_idx : int = None, lng : float = None, lat : float = None):
+    def locate(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        lng: typing.Optional[float] = None,
+        lat: typing.Optional[float] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
-        arglist.extend["--LLI", f"{lat},{lng}"]
+        arglist.extend(["--LLI", f"{str(lat)},{str(lng)}"])
         self._exec("locate", *arglist)
 
-    def adb(self, mnq_name : str = None, mnq_idx : int = None, cmd_str : str = None):
+    def adb(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        cmd_str: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--command", cmd_str])
         self._exec("adb", *arglist)
 
-    def setprop(self, mnq_name : str = None, mnq_idx : int = None, key : str = None, value : str = None):
+    def setprop(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        key: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--key", key, "--value", value])
         self._exec("setprop", *arglist)
 
-    def getprop(self, mnq_name : str = None, mnq_idx : int = None, key : str = None):
+    def getprop(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        key: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         if key is not None:
             arglist.extend(["--key", key])
         self._exec("getprop", *arglist)
 
-    def downcpu(self, mnq_name : str = None, mnq_idx : int = None, rate : int = None):
+    def downcpu(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        rate: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
+        if rate is None:
+            rate = 100
         self.__argument_check_range(rate, 0, 100)
         arglist.extend(["--rate", str(rate)])
         self._exec("downcpu", *arglist)
 
-    def backup(self, mnq_name : str = None, mnq_idx : int = None, filepath : str = None):
+    def backup(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        filepath: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--file", filepath])
         self._exec("backup", *arglist)
 
-    def restore(self, mnq_name : str = None, mnq_idx : int = None, filepath : str = None):
+    def restore(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        filepath: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--file", filepath])
         self._exec("restore", *arglist)
 
-    def action(self, mnq_name : str = None, mnq_idx : int = None, name :str = None, value : str = None):
+    def action(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        name: typing.Optional[str] = None,
+        value: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--name", name, "--value", value])
         self._exec("action", *arglist)
 
-    def scan(self, mnq_name : str = None, mnq_idx : int = None, filepath : str = None):
+    def scan(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        filepath: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--file", filepath])
@@ -343,25 +456,49 @@ class Rawconsole(ConsoleInterface):
     def rock(self):
         self._exec("rock")
 
-    def pull(self, mnq_name : str = None, mnq_idx : int = None, remote : str = None, local : str = None):
+    def pull(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        remote: typing.Optional[str] = None,
+        local: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--remote", remote, "--local", local])
         self._exec("pull", *arglist)
-    
-    def push(self, mnq_name : str = None, mnq_idx : int = None, remote : str = None, local : str = None):
+
+    def push(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        remote: typing.Optional[str] = None,
+        local: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--remote", remote, "--local", local])
         self._exec("push", *arglist)
 
-    def backupapp(self, mnq_name : str = None, mnq_idx : int = None, apk_package_name : str = None, filepath : str = None):
+    def backupapp(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_package_name: typing.Optional[str] = None,
+        filepath: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--packagename", apk_package_name, "--file", filepath])
         self._exec("backupapp", *arglist)
 
-    def restoreapp(self, mnq_name : str = None, mnq_idx : int = None, apk_package_name : str = None, filepath : str = None):
+    def restoreapp(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_package_name: typing.Optional[str] = None,
+        filepath: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--packagename", apk_package_name, "--file", filepath])
@@ -369,10 +506,10 @@ class Rawconsole(ConsoleInterface):
 
     def globalsetting(
         self,
-        fps : int = None,
-        audio : bool = None,
-        fastplay : bool = None,
-        cleanmode : bool = None
+        fps: typing.Optional[int] = None,
+        audio: typing.Optional[bool] = None,
+        fastplay: typing.Optional[bool] = None,
+        cleanmode: typing.Optional[bool] = None,
     ):
         arglist = []
         if fps is not None:
@@ -385,38 +522,61 @@ class Rawconsole(ConsoleInterface):
             arglist.extend(["--cleanmode", 1 if cleanmode else 0])
         self._exec("globalsetting", *arglist)
 
-    def launchex(self, mnq_name : str = None, mnq_idx : int = None, apk_package_name : str = None):
+    def launchex(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        apk_package_name: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--packagename", apk_package_name])
         self._exec("launchex", *arglist)
 
-    def operatelist(self, mnq_name : str = None, mnq_idx : int = None):
+    def operatelist(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         self._query("operatelist", *arglist)
 
-    def operateinfo(self, mnq_name : str = None, mnq_idx : int = None, filepath : str = None):
+    def operateinfo(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        filepath: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--file", filepath])
         self._query("operateinfo", *arglist)
 
-    def operaterecord(self, mnq_name : str = None, mnq_idx : int = None, jsonstring : str = None):
+    def operaterecord(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+        jsonstring: typing.Optional[str] = None,
+    ):
         arglist = []
         self.__argument_id(mnq_name, mnq_idx, arglist)
         arglist.extend(["--content", jsonstring])
         self._exec("operaterecord", *arglist)
 
     #
-    def get(self, mnq_name : str = None, mnq_idx : int = None):
+    def get(
+        self,
+        mnq_name: typing.Optional[str] = None,
+        mnq_idx: typing.Optional[int] = None,
+    ):
         if isinstance(mnq_name, int):
             mnq_idx = mnq_name
         for item in self.list2():
             if item["name"] == mnq_name or item["id"] == mnq_idx:
                 return item
-            
-    def query(self, qrystr : str, returnIds : bool = False):
+
+    def query(self, qrystr: str, returnIds: bool = False):
         evalfunc = eval(f"lambda q : {qrystr}")
         matched = []
 
