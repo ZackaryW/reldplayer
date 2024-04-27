@@ -7,29 +7,34 @@ reimagined pyldplayer
 pip install reldplayer
 ```
 
-# usage
-example
+# usage examples
+
+## common examples
+to launch and sort the instances utilizing the synchronizer
 ```py
-# instantiate using factory descriptor
-r = ReLDPlayer.factory
-
-# make a query using pythonic syntax
-instances = r.query("q['name'].startswith('{name}')", returnIds=True)
-
-# set batch applied instances
-r.currentApplied = instances
-
-# launch them all
-r.console.launch()
-
-# wait till all of them are loaded
-r.waitTillBatchLoaded()
-sleep(5)
-
-# set orientation
-r.wndMgr.quickGrid("2X2", monitor=3)
-
-# set primary instance and open synchronizer
-r.autogui.setPrimary(name="{name}").synchronizer()
-
+player = Reldplayer(Config({PATH}))
+player.synchronizer.setq([1, 2, 3, 4])
+player.console.launch()
+player.wndmgr.gridOrientation(gridStr="2X2")
 ```
+
+traditional methods works too
+```py
+player = Reldplayer(Config({PATH}))
+player.console.launch(1)
+player.console.launch(2)
+player.console.launch(3)
+player.console.launch(4)
+player.wndmgr.gridOrientation(gridStr="2X2")
+```
+
+## modify root status
+```py
+player = Reldplayer(Config({PATH}))
+player.synchronizer.setq([1])
+player.console.modify(root=True)
+player.console.launch()
+<do whatever you want>
+```
+> this is currently not available for LDPlayer 4 or below
+

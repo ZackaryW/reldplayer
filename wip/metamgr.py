@@ -1,9 +1,3 @@
-
-from functools import cached_property
-import os
-
-from reldplayer.models.file import KMP, LeidianCfg, LeidiansCfg
-
 class MetaContainer:
     def __init__(self, path : str, matchtype : str = "*", model = None):
         assert model is not None
