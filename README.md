@@ -38,3 +38,5 @@ player.console.launch()
 ```
 > this is currently not available for LDPlayer 4 or below
 
+# Acknowledgements
+- [pdoc](https://pdoc3.github.io/pdoc) for documentation
