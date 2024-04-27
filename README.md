@@ -6,6 +6,7 @@ reimagined pyldplayer
 ```bash
 pip install reldplayer
 ```
+this package uses a lot of passive imports, you can use `pip install reldplayer[all]` to install all dependencies
 
 # usage examples
 
