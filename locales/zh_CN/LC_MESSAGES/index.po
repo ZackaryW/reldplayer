@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, ZackaryW
+# This file is distributed under the same license as the reldplayer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: reldplayer \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-27 16:37-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../docs/index.rst:7
+msgid "Welcome to reldplayer's documentation!"
+msgstr ""
+
+#: ../../docs/index.rst:9
+msgid "core.player"
+msgstr ""
+
+#: of reldplayer.core.config.PlayerConfig:1 reldplayer.core.ctx.PlayerCtx:1
+#: reldplayer.core.player.Player:1
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: of reldplayer.core.player.Player:1
+msgid "All in one player class for interactions"
+msgstr ""
+
+#: ../../docs/index.rst:19
+msgid "core.config"
+msgstr ""
+
+#: of reldplayer.core.config.PlayerConfigMeta:1
+msgid "Bases: :py:class:`type`"
+msgstr ""
+
+#: of reldplayer.core.config.PlayerConfigMeta.mro:1
+msgid "Return a type's method resolution order."
+msgstr ""
+
+#: ../../docs/index.rst:29
+msgid "core.ctx"
+msgstr ""
+
+#: ../../docs/index.rst:39
+msgid "extensions.console"
+msgstr ""
+
+#: of reldplayer.extensions.console.Console:1
+msgid "Bases: :py:class:`~reldplayer.internal.iconsole.IConsole`"
+msgstr ""
+
+#: ../../docs/index.rst:49
+msgid "extensions.manage_config"
+msgstr ""
+
+#: ../../docs/index.rst:59
+msgid "extensions.manage_macro"
+msgstr ""
+
+#: ../../docs/index.rst:69
+msgid "extensions.manage_window"
+msgstr ""
+

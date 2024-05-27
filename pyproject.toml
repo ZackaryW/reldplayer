@@ -1,49 +1,30 @@
-[project]
+[tool.poetry]
 name = "reldplayer"
-version = "0.0.1"
-description = "a reimagined pyldplayer that better suits scripting needs"
-authors = [
-    { name = "ZackaryW", email = "36378555+ZackaryW@users.noreply.github.com" }
-]
-dependencies = [
-    "zro2>=0.2.0",
-    "pillow>=10.3.0",
-]
+version = "0.1.0"
+description = ""
+authors = ["ZackaryW <36378555+ZackaryW@users.noreply.github.com>"]
+license = "MIT"
 readme = "README.md"
-requires-python = ">= 3.8"
+packages = [{include = "reldplayer", from = "src"}]
 
-[project.optional-dependencies]
-all = [
-    "pydantic>=2.6.4",
-    "pyautogui>=0.9.54",
-    "screeninfo>=0.8.1",
-    "psutil>=5.9.8",
-    "pyscreeze>=0.1.30",
-    "pillow>=10.3.0",
-    "easyocr>=1.7.1", 
-]
+[tool.poetry.dependencies]
+python = "^3.12"
+zrcl = "^0.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.1"
+black = "^24.4.2"
+psutil = "^5.9.8"
+pygetwindow = "^0.0.9"
+pyautogui = "^0.9.54"
+sphinx = "^7.3.7"
+furo = "^2024.5.6"
+sphinx-intl = "^2.2.0"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "pydantic>=2.6.4",
-    "pyautogui>=0.9.54",
-    "screeninfo>=0.8.1",
-    "psutil>=5.9.8",
-    "pyscreeze>=0.1.30",
-    "pillow>=10.3.0",
-    "easyocr>=1.7.1",
-]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/reldplayer"]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.ruff.extend-per-file-ignores]
-"**/__init__.py" = ["F401"]
+"__init__.py" = ["F401"]
