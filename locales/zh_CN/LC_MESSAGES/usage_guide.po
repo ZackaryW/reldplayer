@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2024, ZackaryW
+# This file is distributed under the same license as the reldplayer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: reldplayer \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-29 01:08-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_CN\n"
+"Language-Team: zh_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ../../docs/usage_guide.rst:3
+msgid "core.player"
+msgstr ""
+
+#: of reldplayer.core.config.PlayerConfig:1 reldplayer.core.ctx.PlayerCtx:1
+#: reldplayer.core.player.Player:1
+#: reldplayer.extensions.manage_config.ManageConfig:1
+#: reldplayer.extensions.manage_macro.ManageMacro:1
+#: reldplayer.extensions.manage_window.ManageWindow:1
+#: reldplayer.internal.model_mps.KeyboardMapping:1
+#: reldplayer.internal.model_record.OperationRecord:1
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: of reldplayer.core.player.Player:1
+msgid "All in one player class for interactions"
+msgstr ""
+
+#: of reldplayer.core.player.Player.copy:1
+msgid "creates a copy with identical PlayerConfig"
+msgstr ""
+
+#: of reldplayer.core.player.Player.select:1
+msgid "used to set up the PlayerCtx.selected"
+msgstr ""
+
+#: of reldplayer.core.player.Player.select_actives:1
+msgid "select all active windows"
+msgstr ""
+
+#: ../../docs/usage_guide.rst:12
+msgid "core.config"
+msgstr ""
+
+#: of reldplayer.core.config.PlayerConfigMeta:1
+msgid "Bases: :py:class:`type`"
+msgstr ""
+
+#: of reldplayer.core.config.PlayerConfigMeta.mro:1
+msgid "Return a type's method resolution order."
+msgstr ""
+
+#: ../../docs/usage_guide.rst:22
+msgid "core.ctx"
+msgstr ""
+
+#: ../../docs/usage_guide.rst:32
+msgid "extensions.console"
+msgstr ""
+
+#: of reldplayer.extensions.console.Console:1
+msgid "Bases: :py:class:`~reldplayer.internal.iconsole.IConsole`"
+msgstr ""
+
+#: ../../docs/usage_guide.rst:42
+msgid "extensions.manage_config"
+msgstr ""
+
+#: ../../docs/usage_guide.rst:52
+msgid "extensions.manage_macro"
+msgstr ""
+
+#: ../../docs/usage_guide.rst:62
+msgid "extensions.manage_window"
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient:1
+#: reldplayer.internal.model_config.LeidiansConfig:1
+#: reldplayer.internal.model_mps.SMP:1
+#: reldplayer.internal.model_profile_config.LeidianConfig:1
+#: reldplayer.internal.model_record.RecordInfo:1
+msgid "Bases: :py:class:`~typing.TypedDict`"
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.fromkeys:1
+msgid "Create a new dictionary with keys from iterable and values set to value."
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.get:1
+#: reldplayer.extensions.manage_window.GridOrient.setdefault:3
+msgid "Return the value for key if key is in the dictionary, else default."
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.pop:1
+msgid ""
+"If the key is not found, return the default if given; otherwise, raise a "
+"KeyError."
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.popitem:1
+msgid "Remove and return a (key, value) pair as a 2-tuple."
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.popitem:3
+msgid ""
+"Pairs are returned in LIFO (last-in, first-out) order. Raises KeyError if"
+" the dict is empty."
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.setdefault:1
+msgid "Insert key with a value of default if key is not in the dictionary."
+msgstr ""
+
+#: of reldplayer.extensions.manage_window.GridOrient.update:1
+msgid ""
+"If E is present and has a .keys() method, then does:  for k in E: D[k] = "
+"E[k] If E is present and lacks a .keys() method, then does:  for k, v in "
+"E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]"
+msgstr ""
+
+#: ../../docs/usage_guide.rst:71
+msgid "internal"
+msgstr ""
+

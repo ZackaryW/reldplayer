@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: reldplayer \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-28 22:58-0700\n"
+"POT-Creation-Date: 2024-05-29 01:08-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_CN\n"
@@ -19,119 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
 
+#: ../../docs/index.rst:8
+msgid "Contents:"
+msgstr "目录"
+
 #: ../../docs/index.rst:7
 msgid "Welcome to reldplayer's documentation!"
-msgstr ""
-
-#: ../../docs/index.rst:9
-msgid "core.player"
-msgstr ""
-
-#: of reldplayer.core.config.PlayerConfig:1 reldplayer.core.ctx.PlayerCtx:1
-#: reldplayer.core.player.Player:1
-#: reldplayer.extensions.manage_config.ManageConfig:1
-#: reldplayer.extensions.manage_macro.ManageMacro:1
-#: reldplayer.internal.model_mps.KeyboardMapping:1
-msgid "Bases: :py:class:`object`"
-msgstr ""
-
-#: of reldplayer.core.player.Player:1
-msgid "All in one player class for interactions"
-msgstr ""
-
-#: of reldplayer.core.player.Player.copy:1
-msgid "creates a copy with identical PlayerConfig"
-msgstr ""
-
-#: of reldplayer.core.player.Player.select:1
-msgid "used to set up the PlayerCtx.selected"
-msgstr ""
-
-#: of reldplayer.core.player.Player.select_actives:1
-msgid "select all active windows"
-msgstr ""
-
-#: ../../docs/index.rst:19
-msgid "core.config"
-msgstr ""
-
-#: of reldplayer.core.config.PlayerConfigMeta:1
-msgid "Bases: :py:class:`type`"
-msgstr ""
-
-#: of reldplayer.core.config.PlayerConfigMeta.mro:1
-msgid "Return a type's method resolution order."
-msgstr ""
-
-#: ../../docs/index.rst:29
-msgid "core.ctx"
-msgstr ""
-
-#: ../../docs/index.rst:39
-msgid "extensions.console"
-msgstr ""
-
-#: of reldplayer.extensions.console.Console:1
-msgid "Bases: :py:class:`~reldplayer.internal.iconsole.IConsole`"
-msgstr ""
-
-#: ../../docs/index.rst:49
-msgid "extensions.manage_config"
-msgstr ""
-
-#: ../../docs/index.rst:59
-msgid "extensions.manage_macro"
-msgstr ""
-
-#: ../../docs/index.rst:69
-msgid "extensions.manage_window"
-msgstr ""
-
-#: ../../docs/index.rst:78
-msgid "internal"
-msgstr ""
-
-#: of reldplayer.internal.model_config.LeidiansConfig:1
-#: reldplayer.internal.model_mps.SMP:1
-#: reldplayer.internal.model_profile_config.LeidianConfig:1
-msgid "Bases: :py:class:`~typing.TypedDict`"
-msgstr ""
-
-#~ msgid ""
-#~ "Create a new dictionary with keys "
-#~ "from iterable and values set to "
-#~ "value."
-#~ msgstr ""
-
-#~ msgid "Return the value for key if key is in the dictionary, else default."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If the key is not found, return"
-#~ " the default if given; otherwise, "
-#~ "raise a KeyError."
-#~ msgstr ""
-
-#~ msgid "Remove and return a (key, value) pair as a 2-tuple."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Pairs are returned in LIFO (last-"
-#~ "in, first-out) order. Raises KeyError"
-#~ " if the dict is empty."
-#~ msgstr ""
-
-#~ msgid "Insert key with a value of default if key is not in the dictionary."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If E is present and has a "
-#~ ".keys() method, then does:  for k "
-#~ "in E: D[k] = E[k] If E is"
-#~ " present and lacks a .keys() method,"
-#~ " then does:  for k, v in E: "
-#~ "D[k] = v In either case, this "
-#~ "is followed by: for k in F:  "
-#~ "D[k] = F[k]"
-#~ msgstr ""
+msgstr "欢迎访问reldplayer的文档!"
 
