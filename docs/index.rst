@@ -74,3 +74,10 @@ extensions.manage_window
     :show-inheritance:
     :inherited-members:
 
+internal
+--------------------------
+
+.. automodule:: reldplayer.internal
+    :members:
+    :show-inheritance:
+    :imported-members:

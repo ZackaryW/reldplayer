@@ -23,6 +23,15 @@ extensions = [
     'sphinx.ext.napoleon'
 ]
 
+autodoc_mock_imports = [
+    "screeninfo",
+    "pygetwindow",
+    "pyautogui",
+    "pyscreeze",
+    "pywin32",
+    "PIL",
+]
+
 templates_path = ['_templates']
 exclude_patterns = []
 

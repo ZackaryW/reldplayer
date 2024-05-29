@@ -1,2 +1,3 @@
-from .player import Reldplayer 
-from .com.config import Config
+from reldplayer.core.player import Player
+from reldplayer.core.config import PlayerConfig
+from reldplayer.objs.query import Query

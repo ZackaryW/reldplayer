@@ -9,7 +9,7 @@ packages = [{include = "reldplayer", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-zrcl = "^0.3.0"
+zrcl = "^0.3.1"
 
 
 [tool.poetry.group.dev.dependencies]
