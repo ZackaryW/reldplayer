@@ -24,6 +24,7 @@ sphinx-autobuild = ">=2024.2.4"
 sphinx-copybutton = ">=0.5.2"
 furo = ">=2024.1.29"
 sphinx-intl = "^2.2.0"
+myst-parser = "^3.0.1"
 
 [build-system]
 requires = ["poetry-core"]
