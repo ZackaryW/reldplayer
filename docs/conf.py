@@ -39,7 +39,7 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 language = 'en'
-locale_dirs = ['locales/']
+locale_dirs = ['../locales/']
 gettext_compact = False
 # This part is for ReadTheDocs to build the docs in different languages
 if os.getenv('READTHEDOCS') == 'True':
