@@ -38,8 +38,12 @@ autodoc_mock_imports = [
 templates_path = ['_templates']
 exclude_patterns = []
 
+language = 'en'
 locale_dirs = ['locales/']
 gettext_compact = False
+# This part is for ReadTheDocs to build the docs in different languages
+if os.getenv('READTHEDOCS') == 'True':
+    language = os.getenv('READTHEDOCS_LANGUAGE', 'en')
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
