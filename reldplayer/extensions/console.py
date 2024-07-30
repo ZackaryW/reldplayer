@@ -61,7 +61,7 @@ class Console(IConsole):
         return query_raw(self.__ldconsole__, cmd, *args)
 
     # commands
-    def quit(
+    def quit(   
         self,
         mnq_name: typing.Optional[str] = None,
         mnq_idx: typing.Optional[int] = None,

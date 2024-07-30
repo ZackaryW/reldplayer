@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "reldplayer"
-version = "0.1.0"
+version = "0.1.2"
 description = ""
 authors = ["ZackaryW <36378555+ZackaryW@users.noreply.github.com>"]
 license = "MIT"
@@ -9,14 +9,12 @@ packages = [{include = "reldplayer", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-zrcl = "^0.3.1"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.2.1"
-black = "^24.4.2"
 psutil = "^5.9.8"
 pygetwindow = "^0.0.9"
 pyautogui = "^0.9.54"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.1"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = ">=7.2.6"
