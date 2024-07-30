@@ -12,6 +12,7 @@ python = "^3.12"
 psutil = "^5.9.8"
 pygetwindow = "^0.0.9"
 pyautogui = "^0.9.54"
+pyldplayer = "^3.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"

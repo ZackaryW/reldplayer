@@ -556,6 +556,17 @@ files = [
 windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
+name = "pyldplayer"
+version = "3.0.0"
+description = "base command-line and folder structure wrapper for LDPlayer"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pyldplayer-3.0.0-py3-none-any.whl", hash = "sha256:60cfaed19a5a2ffa54ef1eab27a64c84599833cc45a1fb6949ae5d8b62b6c653"},
+    {file = "pyldplayer-3.0.0.tar.gz", hash = "sha256:1208ca92f7fb5da0119b07c300bb7dc83fa3aacf1cb3cb1fd8208778cfe48d6d"},
+]
+
+[[package]]
 name = "pymsgbox"
 version = "1.0.9"
 description = "A simple, cross-platform, pure Python module for JavaScript-like message boxes."
@@ -1266,4 +1277,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "2ceedfbbcea382df6b1616276e2592616b7c19502c266c4348f32ed91e38e65f"
+content-hash = "e7e1b007a36c8db6b983a916c2eae9e6c0dfe18a93d3144b7621fbf7ff32dcec"
