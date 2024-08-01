@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "reldplayer"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["ZackaryW <36378555+ZackaryW@users.noreply.github.com>"]
 license = "MIT"
@@ -9,14 +9,15 @@ packages = [{include = "reldplayer", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-zrcl = "^0.3.1"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.2.1"
-black = "^24.4.2"
 psutil = "^5.9.8"
 pygetwindow = "^0.0.9"
 pyautogui = "^0.9.54"
+pywin32 = "^306"
+screeninfo = "^0.8.1"
+pyldplayer = "^3.0.3"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.1"
 
 [tool.poetry.group.docs.dependencies]
 sphinx = ">=7.2.6"
@@ -32,3 +33,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff.extend-per-file-ignores]
 "__init__.py" = ["F401"]
+
