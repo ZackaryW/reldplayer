@@ -1,12 +1,7 @@
-import pygetwindow as gw
 import pyautogui as pg
 
 
-class WindowInstance:
-
-    def __init__(self, wnd: gw.Win32Window) -> None:
-        self.wnd = wnd
-
+class AutoWindow:
     def volumeup(self):
         with pg.hold("ctrl"):
             pg.press("+")
@@ -32,6 +27,7 @@ class WindowInstance:
         with pg.hold("ctrl"):
             pg.press("7")
 
+    # ANCHOR primary only
     def volumeMax(self):
         with pg.hold("ctrl"):
             for _ in range(20):
@@ -45,7 +41,7 @@ class WindowInstance:
         with pg.hold("ctrl"):
             pg.press("5")
 
-    def fullscreen(self, wnd: gw.Window | None = None):
+    def fullscreen(self):
         pg.press("f11")
 
     def operationRecorder(self):
