@@ -1,36 +1,31 @@
-[tool.poetry]
+[project]
 name = "reldplayer"
-version = "0.2.0"
-description = ""
-authors = ["ZackaryW <36378555+ZackaryW@users.noreply.github.com>"]
-license = "MIT"
+version = "0.1.1"
+description = "a superset to pyldplayer"
+authors = [
+    { name = "ZackaryW", email = "36378555+ZackaryW@users.noreply.github.com" }
+]
+dependencies = [
+    "psutil>=6.0.0",
+    "pygetwindow>=0.0.9",
+    "pyautogui>=0.9.54",
+    "pywin32>=306",
+    "screeninfo>=0.8.1",
+    "pyldplayer>=3.0.4",
+]
 readme = "README.md"
-packages = [{include = "reldplayer", from = "src"}]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-psutil = "^5.9.8"
-pygetwindow = "^0.0.9"
-pyautogui = "^0.9.54"
-pywin32 = "^306"
-screeninfo = "^0.8.1"
-pyldplayer = "^3.0.3"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.2.1"
-
-[tool.poetry.group.docs.dependencies]
-sphinx = ">=7.2.6"
-sphinx-autobuild = ">=2024.2.4"
-sphinx-copybutton = ">=0.5.2"
-furo = ">=2024.1.29"
-sphinx-intl = "^2.2.0"
-myst-parser = "^3.0.1"
+requires-python = ">= 3.8"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.ruff.extend-per-file-ignores]
-"__init__.py" = ["F401"]
+[tool.rye]
+managed = true
+dev-dependencies = []
 
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reldplayer"]
