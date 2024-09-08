@@ -1,6 +1,6 @@
 [project]
 name = "reldplayer"
-version = "0.1.1"
+version = "0.2.1"
 description = "a superset to pyldplayer"
 authors = [
     { name = "ZackaryW", email = "36378555+ZackaryW@users.noreply.github.com" }
