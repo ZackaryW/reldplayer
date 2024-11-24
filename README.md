@@ -9,6 +9,10 @@ to install an older version:
 ```bash
 pip install reldplayer==0.2.1
 ```
+to install optional dependencies:
+```bash
+pip install reldplayer[full]
+```
 
 ## Features
 1. Provides additional overloading to obtain LDPlayer path
