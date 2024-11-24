@@ -10,28 +10,13 @@
 #   universal: false
 
 -e file:.
-mouseinfo==0.1.3
-    # via pyautogui
-psutil==6.0.0
+click==8.1.7
     # via reldplayer
-pyautogui==0.9.54
-    # via reldplayer
+colorama==0.4.6
+    # via click
 pygetwindow==0.0.9
-    # via pyautogui
     # via reldplayer
-pyldplayer==3.0.4
+pyldplayer==4.0.2
     # via reldplayer
-pymsgbox==1.0.9
-    # via pyautogui
-pyperclip==1.9.0
-    # via mouseinfo
 pyrect==0.2.0
     # via pygetwindow
-pyscreeze==1.0.1
-    # via pyautogui
-pytweening==1.2.0
-    # via pyautogui
-pywin32==306
-    # via reldplayer
-screeninfo==0.8.1
-    # via reldplayer
