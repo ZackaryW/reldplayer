@@ -1,20 +1,27 @@
 [project]
 name = "reldplayer"
-version = "0.2.1"
+version = "0.9.0"
 description = "a superset to pyldplayer"
 authors = [
     { name = "ZackaryW", email = "36378555+ZackaryW@users.noreply.github.com" }
 ]
 dependencies = [
-    "psutil>=6.0.0",
+    "pyldplayer>=4.0.2",
     "pygetwindow>=0.0.9",
-    "pyautogui>=0.9.54",
-    "pywin32>=306",
-    "screeninfo>=0.8.1",
-    "pyldplayer>=3.0.4",
+    "click>=8.1.7",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
+
+[project.scripts]
+reldplay = "reldplayer.shell.__init__:run"
+
+[project.optional-dependencies]
+full = [
+    "psutil>=6.1.0",
+    "pyautogui>=0.9.54",
+    "screeninfo>=0.8.1",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -22,10 +29,18 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = []
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "psutil>=6.1.0",
+    "pyautogui>=0.9.54",
+    "screeninfo>=0.8.1",
+]
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/reldplayer"]
+
+[tool.ruff]
+ignore = ["F401"]
