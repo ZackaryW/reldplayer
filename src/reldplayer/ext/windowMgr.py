@@ -1,7 +1,7 @@
 import typing
 from pyldplayer import LDAppAttr, LDConsole
 from reldplayer.ext.window import LDWindow
-from pyldplayer.model.queryObj import QueryObj
+from pyldplayer.utils.query import QueryObj
 
 
 class LDWindowMgr:

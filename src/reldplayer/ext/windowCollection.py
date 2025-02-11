@@ -2,7 +2,6 @@ from functools import cached_property
 from reldplayer.ext.window import LDWindow
 import typing
 
-from reldplayer.utils import grid_orientation
 
 
 class _Layout:
@@ -21,6 +20,8 @@ class _Layout:
         monitor: int = 0,
         sleepTime: float = 0.2,
     ):
+        from reldplayer.utils import grid_orientation
+
         grid_orientation(
             [x.wnd for x in self.__c],
             rows,

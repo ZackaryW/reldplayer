@@ -1,12 +1,12 @@
 [project]
 name = "reldplayer"
-version = "0.9.1"
+version = "1.0.0"
 description = "a superset to pyldplayer"
 authors = [
     { name = "ZackaryW", email = "36378555+ZackaryW@users.noreply.github.com" }
 ]
 dependencies = [
-    "pyldplayer>=4.0.2",
+    "pyldplayer>=4.1.6",
     "pygetwindow>=0.0.9",
     "click>=8.1.7",
 ]

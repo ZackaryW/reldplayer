@@ -1,8 +1,10 @@
+import pprint
 import click
 from pyldplayer.coms.batchConsole import LDBatchConsole
-from pyldplayer.model.queryObj import QueryObj, Cond
+from pyldplayer.utils.query import QueryObj
 from pyldplayer.model.list2meta import List2Meta
 from click.core import Context
+
 
 try:
     console = LDBatchConsole()
@@ -10,9 +12,9 @@ except:  # noqa
     console = None
 
 def get_3_affected(queryobj : QueryObj):
-    for item in console.list2():
-        if queryobj.validate(item):
-            yield item["name"] + "(" + str(item["id"]) + ")"
+    res = console.query(queryobj)
+    for item in res:
+        yield item["name"] + "(" + str(item["id"]) + ")"
 
 def get_affected_string(queryobj : QueryObj):
     string : str = ""
@@ -59,7 +61,6 @@ class CustomGroup(click.Group):
                     formatter.write('\n')
 
 @click.group(cls=CustomGroup, invoke_without_command=True)
-@click.option("--cond", "-c", help="condition spec", multiple=True)
 @click.option("--query", "-q", help="query spec")
 @click.option("--id", "-i", help="specifc id", type=int)
 @click.option("--name", "-n", help="specifc name")
@@ -69,7 +70,6 @@ class CustomGroup(click.Group):
 @click.pass_context
 def cli(
     ctx: click.Context,
-    cond: list[str],
     query: str,
     id: int,
     name: str,
@@ -91,31 +91,23 @@ def cli(
         interval = interval or 5
         console.add_interval(interval=interval)
 
-    count = 0
     if query:
-        try:
-            loc = {}
-            exec(f"x={query}", {"Cond": Cond}, loc)
-            query = loc["x"]
-            count += 1
-        except SyntaxError:
-            raise click.UsageError("invalid query syntax")
+        query2 = query
+    else:
+        query2 = "True"
+
     if id:
-        query = [id]
-        count += 1
+        query2 += f" and id == {id}"
+
     if name:
-        query = [name]
-        count += 1
-    if len(cond) > 0:
-        query = Cond(" and ".join(cond))
-        count += 1
+        query2 += f" and name == {name}"
+    
+    try:
+        ctx.obj = QueryObj.parse(query2)
+    except Exception as e:
+        raise click.UsageError(f"invalid query: {e}")
 
-    if count > 1:
-        raise click.UsageError("only one of id, name, query or cond can be specified")
 
-    if count == 0:
-        return
-    ctx.obj = QueryObj.parse(query)
 
     click.echo(f"scope: {get_affected_string(ctx.obj)}")
 

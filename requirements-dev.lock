@@ -10,7 +10,7 @@
 #   universal: false
 
 -e file:.
-click==8.1.7
+click==8.1.8
     # via reldplayer
 colorama==0.4.6
     # via click
@@ -23,12 +23,12 @@ packaging==24.2
     # via pytest
 pluggy==1.5.0
     # via pytest
-psutil==6.1.0
+psutil==6.1.1
 pyautogui==0.9.54
 pygetwindow==0.0.9
     # via pyautogui
     # via reldplayer
-pyldplayer==4.0.2
+pyldplayer==4.1.6
     # via reldplayer
 pymsgbox==1.0.9
     # via pyautogui
@@ -38,7 +38,7 @@ pyrect==0.2.0
     # via pygetwindow
 pyscreeze==1.0.1
     # via pyautogui
-pytest==8.3.3
+pytest==8.3.4
 pytweening==1.2.0
     # via pyautogui
 screeninfo==0.8.1

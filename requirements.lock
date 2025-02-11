@@ -10,13 +10,13 @@
 #   universal: false
 
 -e file:.
-click==8.1.7
+click==8.1.8
     # via reldplayer
 colorama==0.4.6
     # via click
 pygetwindow==0.0.9
     # via reldplayer
-pyldplayer==4.0.2
+pyldplayer==4.1.6
     # via reldplayer
 pyrect==0.2.0
     # via pygetwindow
