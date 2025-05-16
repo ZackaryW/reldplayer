@@ -1,5 +1,7 @@
 > This project is revamped at [pyldplayer2](https://github.com/ZackaryW/pyldplayer2)
+
 > pyldplayer2 offers more features and better stability
+
 > all scripts are compatible with pyldplayer2
 
 # reldplayer
